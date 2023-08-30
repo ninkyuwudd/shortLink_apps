@@ -25,7 +25,7 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height / 4 + 160,
+                height: MediaQuery.of(context).size.height / 4 + 120,
                 child: Stack(
                   children: [
                     Container(
@@ -38,7 +38,7 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                           color: Colors.amber),
                     ),
                     Positioned(
-                      top: 100,
+                      top: 90,
                       left: 0,
                       right: 0,
                       child: Container(
@@ -60,6 +60,7 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                               controller: urlTitle,
                               decoration: InputDecoration(
                                   hintText: "Link Title",
+                                  label: const Text("Title"),
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
                                       borderSide: const BorderSide(
@@ -67,11 +68,12 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                                       ))),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 20,
                             ),
                             TextField(
                               controller: sortedUrl,
                               decoration: InputDecoration(
+                                  label: const Text("Original Link"),
                                   hintText: "Insert your link",
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
@@ -95,20 +97,64 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                         ),
                       ),
                     ),
+                    Positioned(
+                      top: 15,
+                      left: 20,
+                      right: 15,
+                      child: Text(
+                        "DISHORT",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    Positioned(
+                        top: 60,
+                        left: 20,
+                        child: Text(
+                          "Make Your URL shorten or make QR code",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    Positioned(
+                      left: 20,
+                      top: MediaQuery.of(context).size.height / 4 + 80,
+                      child: Column(
+                        children: [
+                          Text(
+                            "Linked URL",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black38),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
-              ResultWidget(
-                  result: resLink == null
-                      ? "Empty Shorted URL"
-                      : resLink.toString())
+              Container(
+                child: resLink == null
+                    ? Center(child: Text("Empty Shorted URL"))
+                    : ResultWidget(
+                        result: resLink.toString(), linkTitle: urlTitle.text),
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    sortedUrl.dispose();
+    urlTitle.dispose();
   }
 }
