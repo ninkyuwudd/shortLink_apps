@@ -10,6 +10,14 @@ class ResultWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var provider = Provider.of<ShortlinkProvider>(context);
     return Container(
+      margin: EdgeInsets.all(20),
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+            spreadRadius: 2,
+            blurRadius: 2,
+            color: Colors.black12,
+            offset: Offset(1, 2))
+      ]),
       padding: EdgeInsets.all(20),
       child: Row(
         children: [Text(result)],
