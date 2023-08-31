@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
 import 'package:shortlink_apps/view/detail_page.dart';
+import 'package:shortlink_apps/view/test.dart';
 
 class ResultWidget extends StatelessWidget {
   final String result;
@@ -13,7 +14,6 @@ class ResultWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var provider = Provider.of<ShortlinkProvider>(context);
     return Container(
-        margin: EdgeInsets.all(20),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -60,7 +60,7 @@ class ResultWidget extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => DetailShortlink())));
+                            builder: ((context) => const TestDetail())));
                   },
                   child: const Text("Detail")),
             )

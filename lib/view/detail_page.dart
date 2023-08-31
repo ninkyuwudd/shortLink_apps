@@ -60,9 +60,9 @@ class _DetailShortlinkState extends State<DetailShortlink> {
                 ],
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 7 - 120,
-            ),
+            // SizedBox(
+            //   height: MediaQuery.of(context).size.height / 7 - 120,
+            // ),
             DetailLink()
           ],
         ),
