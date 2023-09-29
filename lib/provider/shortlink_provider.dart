@@ -4,6 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ShortlinkProvider extends ChangeNotifier {
+  String TitleUrl = "";
+  String ShortUrl = "";
+
+  // Future<String?> shortenUrl({required String url}) async {
+  //   try {
+  //     final result = await http.post(
+  //         Uri.parse("https://cleanuri.com/api/v1/shorten"),
+  //         body: {'url': url});
+
+  //     if (result.statusCode == 200) {
+  //       final jsonResult = jsonDecode(result.body);
+  //       return jsonResult['result_url'];
+  //     }
+  //   } catch (e) {
+  //     print("Error $e");
+  //   }
+  //   return null;
+  // }
   Future<String?> shortenUrl({required String url}) async {
     try {
       final result = await http.post(
@@ -18,5 +36,26 @@ class ShortlinkProvider extends ChangeNotifier {
       print("Error $e");
     }
     return null;
+  }
+
+  var isloading = false;
+
+  void changeLoading(bool value) {
+    isloading = value;
+    notifyListeners();
+  }
+
+  Future<void> fetch({required String ur}) async {
+    try {
+      final ShortUrl = await shortenUrl(url: ur);
+      isloading = true;
+      notifyListeners();
+      await Future.delayed(Duration(seconds: 3));
+      isloading = false;
+      print(ShortUrl);
+      notifyListeners();
+    } catch (e) {
+      print("Error : $e");
+    }
   }
 }

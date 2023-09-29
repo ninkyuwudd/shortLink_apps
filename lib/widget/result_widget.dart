@@ -5,10 +5,8 @@ import 'package:shortlink_apps/view/detail_page.dart';
 import 'package:shortlink_apps/view/test.dart';
 
 class ResultWidget extends StatelessWidget {
-  final String result;
-  final String linkTitle;
-  const ResultWidget(
-      {super.key, required this.result, required this.linkTitle});
+  final String urlResult;
+  const ResultWidget({super.key, required this.urlResult});
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +28,14 @@ class ResultWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(linkTitle),
+                Text(provider.TitleUrl),
                 SizedBox(
                   height: 10,
                 ),
                 Row(
                   children: [
                     Text(
-                      result,
+                      urlResult,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),

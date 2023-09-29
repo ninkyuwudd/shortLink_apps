@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
+import 'package:shortlink_apps/widget/loading_widget.dart';
 import 'package:shortlink_apps/widget/result_widget.dart';
 
 class HomePageShortLink extends StatefulWidget {
@@ -14,18 +15,12 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
   TextEditingController sortedUrl = TextEditingController();
   TextEditingController urlTitle = TextEditingController();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    sortedUrl.text =
-        "https://www.youtube.com/watch?v=LY1G03vjesw&list=RDojeNjpogoqk&index=2&ab_channel=OurLastNight";
-  }
+  Future<String>? _shortenUrlFuture;
 
-  String? resLink;
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ShortlinkProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -77,7 +72,7 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                                           color: Colors.black38,
                                         ))),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               TextField(
@@ -91,23 +86,29 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                                           color: Colors.black38,
                                         ))),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width / 2,
                                 child: ElevatedButton(
                                     onPressed: () async {
-                                      resLink = await provider.shortenUrl(
+                                      provider.changeLoading(true);
+
+                                      String? srt = await provider.shortenUrl(
                                           url: sortedUrl.text);
+
+                                      _shortenUrlFuture = Future.value(srt);
+
+                                      provider.changeLoading(false);
                                     },
                                     child: const Text("Short")),
-                              )
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      Positioned(
+                      const Positioned(
                         top: 15,
                         left: 20,
                         right: 15,
@@ -119,40 +120,50 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                               color: Colors.white),
                         ),
                       ),
-                      Positioned(
+                      const Positioned(
                           top: 60,
                           left: 20,
                           child: Text(
                             "Make Your URL shorten or make QR code",
                             style: TextStyle(color: Colors.white),
                           )),
-                      Positioned(
-                        left: 20,
-                        top: MediaQuery.of(context).size.height / 3 + 100,
-                        child: Column(
-                          children: [
-                            Text(
-                              "Linked URL",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black38),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+
                 Container(
-                  child: resLink == null
-                      ? Center(child: Text("Empty Shorted URL"))
-                      : ResultWidget(
-                          result: resLink.toString(), linkTitle: urlTitle.text),
+                  margin: EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Linked URL",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black38),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      FutureBuilder(
+                          future: _shortenUrlFuture,
+                          builder: (context, snaps) {
+                            if (provider.isloading) {
+                              return const CircularProgressIndicator();
+                            } else if (snaps.hasData) {
+                              return ResultWidget(
+                                urlResult: snaps.data.toString(),
+                              );
+                            } else {
+                              return const Text("Insert URL");
+                            }
+                          })
+                    ],
+                  ),
                 ),
+
+                //
               ],
             ),
           ),
@@ -163,7 +174,6 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     sortedUrl.dispose();
     urlTitle.dispose();

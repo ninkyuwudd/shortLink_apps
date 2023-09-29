@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class DetailLink extends StatelessWidget {
-  const DetailLink({super.key});
+  DetailLink({super.key});
 
   @override
   Widget build(BuildContext context) {
