@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shortlink_apps/module/copy_text.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
-import 'package:shortlink_apps/view/detail_page.dart';
-import 'package:shortlink_apps/view/test.dart';
 
 class ResultWidget extends StatelessWidget {
   final String urlResult;
@@ -11,44 +10,51 @@ class ResultWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ShortlinkProvider>(context);
+    final scaffold = ScaffoldMessenger.of(context);
     return Container(
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                   spreadRadius: 2,
                   blurRadius: 2,
                   color: Colors.black12,
                   offset: Offset(1, 2))
             ]),
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.only(top: 0, bottom: 20, left: 20, right: 20),
         child: Column(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(provider.TitleUrl),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
                   children: [
                     Text(
                       urlResult,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
-                    Spacer(),
-                    Icon(Icons.copy),
+                    const Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          copyText(urlResult);
+                          scaffold.showSnackBar(
+                              const SnackBar(content: Text("coppied text")));
+                        },
+                        icon: const Icon(Icons.copy))
                   ],
                 ),
               ],
             ),
-            Divider(
+            const Divider(
               color: Colors.black38,
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             SizedBox(
