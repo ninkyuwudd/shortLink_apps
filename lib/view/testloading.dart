@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
 
-import '../widget/result_widget.dart';
+import '../widget/result/result_widget.dart';
 
 class TestLoaading extends StatefulWidget {
   const TestLoaading({super.key});

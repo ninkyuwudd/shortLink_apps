@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
+import 'package:shortlink_apps/routes.dart';
+import 'package:shortlink_apps/view/detail_page.dart';
 import 'package:shortlink_apps/view/home_page.dart';
+import 'package:shortlink_apps/view/list_my_url.dart';
 import 'package:shortlink_apps/view/testloading.dart';
 
 void main() {
@@ -15,8 +18,11 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => ShortlinkProvider())],
-      child: const MaterialApp(
-          debugShowCheckedModeBanner: false, home: const HomePageShortLink()),
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          // home: const HomePageShortLink(),
+          initialRoute: "/",
+          routes: routes),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shortlink_apps/widget/detail/link_detail.dart';
-import 'package:shortlink_apps/widget/result_widget.dart';
+import 'package:shortlink_apps/widget/result/result_widget.dart';
 
 class TestDetail extends StatelessWidget {
   const TestDetail({super.key});

@@ -6,22 +6,15 @@ import 'package:http/http.dart' as http;
 class ShortlinkProvider extends ChangeNotifier {
   String TitleUrl = "";
   String ShortUrl = "";
+  var isloading = false;
+  Future<String>? _shortenUrlFuture;
+  get shortenUrlFuture => _shortenUrlFuture;
 
-  // Future<String?> shortenUrl({required String url}) async {
-  //   try {
-  //     final result = await http.post(
-  //         Uri.parse("https://cleanuri.com/api/v1/shorten"),
-  //         body: {'url': url});
+  void getShortUrl(Future<String> theUrl) {
+    _shortenUrlFuture = theUrl;
+  }
 
-  //     if (result.statusCode == 200) {
-  //       final jsonResult = jsonDecode(result.body);
-  //       return jsonResult['result_url'];
-  //     }
-  //   } catch (e) {
-  //     print("Error $e");
-  //   }
-  //   return null;
-  // }
+  // untuk fetch data api shortlink nya
   Future<String?> shortenUrl({required String url}) async {
     try {
       final result = await http.post(
@@ -37,8 +30,6 @@ class ShortlinkProvider extends ChangeNotifier {
     }
     return null;
   }
-
-  var isloading = false;
 
   void changeLoading(bool value) {
     isloading = value;

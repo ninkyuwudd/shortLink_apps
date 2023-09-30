@@ -55,10 +55,7 @@ class ResultWidget extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2,
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => const TestDetail())));
+                    Navigator.pushNamed(context, "/detail");
                   },
                   child: const Text("Detail")),
             )

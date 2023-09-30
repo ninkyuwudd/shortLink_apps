@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
-import 'package:shortlink_apps/widget/loading_widget.dart';
-import 'package:shortlink_apps/widget/result_widget.dart';
+import 'package:shortlink_apps/widget/result/result_show.dart';
+import 'package:shortlink_apps/widget/result/result_widget.dart';
+import 'package:shortlink_apps/widget/text/body_title.dart';
 
 class HomePageShortLink extends StatefulWidget {
   const HomePageShortLink({super.key});
@@ -14,8 +15,6 @@ class HomePageShortLink extends StatefulWidget {
 class _HomePageShortLinkState extends State<HomePageShortLink> {
   TextEditingController sortedUrl = TextEditingController();
   TextEditingController urlTitle = TextEditingController();
-
-  Future<String>? _shortenUrlFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +97,7 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                                       String? srt = await provider.shortenUrl(
                                           url: sortedUrl.text);
 
-                                      _shortenUrlFuture = Future.value(srt);
+                                      provider.getShortUrl(Future.value(srt));
 
                                       provider.changeLoading(false);
                                     },
@@ -130,40 +129,34 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                     ],
                   ),
                 ),
-
                 Container(
                   margin: EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Linked URL",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.black38),
-                      ),
+                      const TextBodyTitle(text: "Linked URL"),
                       const SizedBox(
                         height: 20,
                       ),
-                      FutureBuilder(
-                          future: _shortenUrlFuture,
-                          builder: (context, snaps) {
-                            if (provider.isloading) {
-                              return const CircularProgressIndicator();
-                            } else if (snaps.hasData) {
-                              return ResultWidget(
-                                urlResult: snaps.data.toString(),
-                              );
-                            } else {
-                              return const Text("Insert URL");
-                            }
-                          })
+                      ResultShowWidget(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      const TextBodyTitle(text: "My Link"),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/myUrl");
+                            },
+                            child: const Text("All Saved URL")),
+                      )
                     ],
                   ),
                 ),
-
-                //
               ],
             ),
           ),
