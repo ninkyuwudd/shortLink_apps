@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shortlink_apps/provider/shortlink_provider.dart';
 import 'package:shortlink_apps/widget/detail/link_detail.dart';
 
 class DetailShortlink extends StatefulWidget {
@@ -11,6 +13,8 @@ class DetailShortlink extends StatefulWidget {
 class _DetailShortlinkState extends State<DetailShortlink> {
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<ShortlinkProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Link Detail"),
@@ -21,20 +25,23 @@ class _DetailShortlinkState extends State<DetailShortlink> {
           children: [
             Container(
               padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                BoxShadow(
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    color: Colors.black12,
-                    offset: Offset(1, 2))
-              ]),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        color: Colors.black12,
+                        offset: Offset(1, 2))
+                  ]),
               child: Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "TITLE",
+                        provider.TitleUrl,
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -47,7 +54,7 @@ class _DetailShortlinkState extends State<DetailShortlink> {
                           SizedBox(
                             width: 15,
                           ),
-                          Text(DateTime.now().toString()),
+                          Text(provider.dateUrl),
                         ],
                       )
                     ],
@@ -60,10 +67,13 @@ class _DetailShortlinkState extends State<DetailShortlink> {
                 ],
               ),
             ),
-            // SizedBox(
-            //   height: MediaQuery.of(context).size.height / 7 - 120,
-            // ),
-            DetailLink()
+            SizedBox(
+              height: 20,
+            ),
+            DetailLink(
+              urlLink: provider.originalUrl,
+              sortedLink: provider.sortedUrl,
+            )
           ],
         ),
       ),

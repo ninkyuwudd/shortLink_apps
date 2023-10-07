@@ -74,7 +74,7 @@ class TestDetail extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            DetailLink()
+            // DetailLink()
           ],
         ),
       ),

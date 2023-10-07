@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
 import 'package:shortlink_apps/widget/result/result_show.dart';
@@ -15,6 +16,9 @@ class HomePageShortLink extends StatefulWidget {
 class _HomePageShortLinkState extends State<HomePageShortLink> {
   TextEditingController sortedUrl = TextEditingController();
   TextEditingController urlTitle = TextEditingController();
+
+  bool validatedTitle = false;
+  bool validatedLInk = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +67,9 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                               TextField(
                                 controller: urlTitle,
                                 decoration: InputDecoration(
+                                    errorText: validatedTitle
+                                        ? "Title Can't be empty"
+                                        : null,
                                     hintText: "Link Title",
                                     label: const Text("Title"),
                                     border: OutlineInputBorder(
@@ -77,6 +84,9 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                               TextField(
                                 controller: sortedUrl,
                                 decoration: InputDecoration(
+                                    errorText: validatedLInk
+                                        ? "Link can't be empty"
+                                        : null,
                                     label: const Text("Original Link"),
                                     hintText: "Insert your link",
                                     border: OutlineInputBorder(
@@ -92,14 +102,36 @@ class _HomePageShortLinkState extends State<HomePageShortLink> {
                                 width: MediaQuery.of(context).size.width / 2,
                                 child: ElevatedButton(
                                     onPressed: () async {
-                                      provider.changeLoading(true);
+                                      setState(() {
+                                        if (urlTitle.text.isEmpty) {
+                                          validatedTitle = true;
+                                        } else {
+                                          validatedTitle = false;
+                                        }
 
-                                      String? srt = await provider.shortenUrl(
-                                          url: sortedUrl.text);
+                                        if (sortedUrl.text.isEmpty) {
+                                          validatedLInk = true;
+                                        } else {
+                                          validatedLInk = false;
+                                        }
+                                      });
 
-                                      provider.getShortUrl(Future.value(srt));
+                                      if (urlTitle.text.isNotEmpty &&
+                                          sortedUrl.text.isNotEmpty) {
+                                        provider.changeLoading(true);
 
-                                      provider.changeLoading(false);
+                                        String? srt = await provider.shortenUrl(
+                                            url: sortedUrl.text);
+
+                                        String dateCreate = DateFormat.yMMMd()
+                                            .format(DateTime.now());
+
+                                        provider.getShortUrl(Future.value(srt));
+                                        provider.getDataUrl(urlTitle.text,
+                                            dateCreate, sortedUrl.text);
+
+                                        provider.changeLoading(false);
+                                      }
                                     },
                                     child: const Text("Short")),
                               ),

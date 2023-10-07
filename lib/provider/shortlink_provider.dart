@@ -5,13 +5,28 @@ import 'package:http/http.dart' as http;
 
 class ShortlinkProvider extends ChangeNotifier {
   String TitleUrl = "";
-  String ShortUrl = "";
+  String dateUrl = "";
+  String originalUrl = "";
+  String sortedUrl = "";
+
   var isloading = false;
   Future<String>? _shortenUrlFuture;
   get shortenUrlFuture => _shortenUrlFuture;
 
   void getShortUrl(Future<String> theUrl) {
     _shortenUrlFuture = theUrl;
+  }
+
+  void getSortedUrlString(String url) {
+    sortedUrl = url;
+    notifyListeners();
+  }
+
+  void getDataUrl(String title, String date, String oriUrl) {
+    TitleUrl = title;
+    dateUrl = date;
+    originalUrl = oriUrl;
+    notifyListeners();
   }
 
   // untuk fetch data api shortlink nya

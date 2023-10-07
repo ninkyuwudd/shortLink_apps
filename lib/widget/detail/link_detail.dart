@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class DetailLink extends StatelessWidget {
-  DetailLink({super.key});
+  final String urlLink;
+  final String sortedLink;
+  const DetailLink(
+      {super.key, required this.urlLink, required this.sortedLink});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class DetailLink extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "https://app.bitly.com/Bn3m8",
+                  sortedLink,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -55,8 +58,7 @@ class DetailLink extends StatelessWidget {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 160,
-                  child: Text(
-                      "https://app.bitly.com/Bn3m8g13yYv/bitlinks/3KGpyPR/details"),
+                  child: Text(urlLink),
                 )
               ],
             ),
@@ -72,7 +74,7 @@ class DetailLink extends StatelessWidget {
             ),
             PrettyQr(
               image: AssetImage('images/ig.png'),
-              data: "https://app.bitly.com/Bn3m8",
+              data: sortedLink,
               errorCorrectLevel: QrErrorCorrectLevel.M,
             ),
             SizedBox(

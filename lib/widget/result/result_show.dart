@@ -21,6 +21,7 @@ class _ResultShowWidgetState extends State<ResultShowWidget> {
           if (provider.isloading) {
             return const CircularProgressIndicator();
           } else if (snaps.hasData) {
+            provider.getSortedUrlString(snaps.data.toString());
             return ResultWidget(
               urlResult: snaps.data.toString(),
             );
