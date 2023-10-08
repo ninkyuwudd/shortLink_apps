@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shortlink_apps/provider/crudlink_provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
 import 'package:shortlink_apps/routes.dart';
 import 'package:shortlink_apps/view/detail_page.dart';
 import 'package:shortlink_apps/view/home_page.dart';
-import 'package:shortlink_apps/view/list_my_url.dart';
+import 'package:shortlink_apps/view/list_my_url_page.dart';
 import 'package:shortlink_apps/view/testloading.dart';
 
 void main() {
@@ -17,7 +18,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => ShortlinkProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => ShortlinkProvider()),
+        ChangeNotifierProvider(create: (_) => CrudListLink())
+      ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           // home: const HomePageShortLink(),

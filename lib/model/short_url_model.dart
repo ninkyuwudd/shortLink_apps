@@ -27,7 +27,7 @@ class DataLink {
   String longUrl;
 
   DataLink({
-    required this.id,
+    this.id,
     required this.title,
     required this.date,
     required this.shortUrl,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shortlink_apps/model/short_url_model.dart';
+import 'package:shortlink_apps/provider/crudlink_provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
 import 'package:shortlink_apps/widget/detail/link_detail.dart';
 
@@ -14,10 +16,26 @@ class _DetailShortlinkState extends State<DetailShortlink> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ShortlinkProvider>(context);
+    var loadSqliteProvider = Provider.of<CrudListLink>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Link Detail"),
+        actions: [
+          TextButton(
+              onPressed: () {
+                loadSqliteProvider.insertLink(DataLink(
+                    title: provider.TitleUrl,
+                    date: provider.dateUrl,
+                    shortUrl: provider.sortedUrl,
+                    longUrl: provider.originalUrl));
+              },
+              child: const Text(
+                "Save",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ))
+        ],
       ),
       body: Container(
         margin: const EdgeInsets.all(20),
