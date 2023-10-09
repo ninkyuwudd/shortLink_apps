@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shortlink_apps/model/short_url_model.dart';
 import 'package:shortlink_apps/provider/crudlink_provider.dart';
+import 'package:shortlink_apps/widget/dialog/alert_dialog.dart';
+import 'package:shortlink_apps/widget/dialog/alert_dialog_params.dart';
 
 class MyListUrl extends StatefulWidget {
   const MyListUrl({super.key});
@@ -24,6 +26,11 @@ class _MyListUrlState extends State<MyListUrl> {
   Widget build(BuildContext context) {
     var loadProvider = Provider.of<CrudListLink>(context);
     var getLink = loadProvider.link;
+
+    del(int idx) {
+      loadProvider.delete(int.parse(getLink[idx].id.toString()));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Saved Link"),
@@ -38,8 +45,18 @@ class _MyListUrlState extends State<MyListUrl> {
                 child: ListTile(
                   leading: IconButton(
                       onPressed: () {
-                        loadProvider
-                            .delete(int.parse(getLink[idx].id.toString()));
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                ShowDialogYesNoParameter(
+                                  title: "Warning !",
+                                  content: "Are you sure to delete this link ?",
+                                  fungsi: (params) {
+                                    loadProvider.delete(
+                                        int.parse(getLink[idx].id.toString()));
+                                  },
+                                  params: idx,
+                                ));
                       },
                       icon: const Icon(Icons.delete)),
                   title: Text(getLink[idx].title),

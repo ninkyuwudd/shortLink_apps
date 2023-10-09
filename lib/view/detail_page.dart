@@ -4,6 +4,7 @@ import 'package:shortlink_apps/model/short_url_model.dart';
 import 'package:shortlink_apps/provider/crudlink_provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
 import 'package:shortlink_apps/widget/detail/link_detail.dart';
+import 'package:shortlink_apps/widget/dialog/alert_dialog.dart';
 
 class DetailShortlink extends StatefulWidget {
   const DetailShortlink({super.key});
@@ -18,17 +19,26 @@ class _DetailShortlinkState extends State<DetailShortlink> {
     var provider = Provider.of<ShortlinkProvider>(context);
     var loadSqliteProvider = Provider.of<CrudListLink>(context);
 
+    insertDataLink() {
+      loadSqliteProvider.insertLink(DataLink(
+          title: provider.TitleUrl,
+          date: provider.dateUrl,
+          shortUrl: provider.sortedUrl,
+          longUrl: provider.originalUrl));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Link Detail"),
         actions: [
           TextButton(
               onPressed: () {
-                loadSqliteProvider.insertLink(DataLink(
-                    title: provider.TitleUrl,
-                    date: provider.dateUrl,
-                    shortUrl: provider.sortedUrl,
-                    longUrl: provider.originalUrl));
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => ShowDialogYesNo(
+                        title: "Info",
+                        content: "Are you sure to save this link ?",
+                        fungsi: insertDataLink));
               },
               child: const Text(
                 "Save",
