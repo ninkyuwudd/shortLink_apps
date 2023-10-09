@@ -22,6 +22,11 @@ class ShortlinkProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void editTitleOnly(String title) {
+    TitleUrl = title;
+    notifyListeners();
+  }
+
   void getDataUrl(String title, String date, String oriUrl) {
     TitleUrl = title;
     dateUrl = date;

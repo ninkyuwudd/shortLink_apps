@@ -5,6 +5,7 @@ import 'package:shortlink_apps/provider/crudlink_provider.dart';
 import 'package:shortlink_apps/provider/shortlink_provider.dart';
 import 'package:shortlink_apps/widget/detail/link_detail.dart';
 import 'package:shortlink_apps/widget/dialog/alert_dialog.dart';
+import 'package:shortlink_apps/widget/dialog/alert_dialog_edit_title.dart';
 
 class DetailShortlink extends StatefulWidget {
   const DetailShortlink({super.key});
@@ -28,9 +29,11 @@ class _DetailShortlinkState extends State<DetailShortlink> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text("Link Detail"),
         actions: [
+          //untuk menampilkan popup dialog apakah ingin save data atau tidak
           TextButton(
               onPressed: () {
                 showDialog(
@@ -47,62 +50,70 @@ class _DetailShortlinkState extends State<DetailShortlink> {
               ))
         ],
       ),
-      body: Container(
-        margin: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                        color: Colors.black12,
-                        offset: Offset(1, 2))
-                  ]),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        provider.TitleUrl,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.calendar_month),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text(provider.dateUrl),
-                        ],
-                      )
-                    ],
-                  ),
-                  const Spacer(),
-                  ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.edit),
-                      label: const Text("Edit"))
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          color: Colors.black12,
+                          offset: Offset(1, 2))
+                    ]),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          provider.TitleUrl,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.calendar_month),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Text(provider.dateUrl),
+                          ],
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    ElevatedButton.icon(
+                        onPressed: () {
+                          // untuk menampilkan popup edit title
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  const EditTItleDialog());
+                        },
+                        icon: const Icon(Icons.edit),
+                        label: const Text("Edit"))
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            DetailLink(
-              urlLink: provider.originalUrl,
-              sortedLink: provider.sortedUrl,
-            )
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              DetailLink(
+                urlLink: provider.originalUrl,
+                sortedLink: provider.sortedUrl,
+              )
+            ],
+          ),
         ),
       ),
     );
