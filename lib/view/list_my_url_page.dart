@@ -27,10 +27,6 @@ class _MyListUrlState extends State<MyListUrl> {
     var loadProvider = Provider.of<CrudListLink>(context);
     var getLink = loadProvider.link;
 
-    del(int idx) {
-      loadProvider.delete(int.parse(getLink[idx].id.toString()));
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Saved Link"),
@@ -40,39 +36,58 @@ class _MyListUrlState extends State<MyListUrl> {
         child: ListView.builder(
             itemCount: getLink.length,
             itemBuilder: (context, idx) {
+              var getData = getLink[idx];
               return GestureDetector(
-                onTap: () {},
-                child: ListTile(
-                  leading: IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                ShowDialogYesNoParameter(
-                                  title: "Warning !",
-                                  content: "Are you sure to delete this link ?",
-                                  fungsi: (params) {
-                                    loadProvider.delete(
-                                        int.parse(getLink[idx].id.toString()));
-                                  },
-                                  params: idx,
-                                ));
-                      },
-                      icon: const Icon(Icons.delete)),
-                  title: Text(getLink[idx].title),
-                  subtitle: Text(getLink[idx].shortUrl),
-                  trailing: IconButton(
-                      onPressed: () {
-                        loadProvider.updateLink(
-                            DataLink(
-                                id: getLink[idx].id,
-                                title: "title edited",
-                                date: "date edited",
-                                shortUrl: DateTime.now().toString(),
-                                longUrl: "link long edited"),
-                            int.parse(getLink[idx].id.toString()));
-                      },
-                      icon: const Icon(Icons.edit)),
+                onTap: () {
+                  Navigator.pushNamed(context, '/detailSaved', arguments: {
+                    'id': getData.id,
+                    'title': getData.title,
+                    'date': getData.date,
+                    'longLink': getData.longUrl,
+                    'shortLink': getData.shortUrl
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                    BoxShadow(
+                        color: Colors.black12,
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(0, 2))
+                  ]),
+                  child: ListTile(
+                    leading: IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  ShowDialogYesNoParameter(
+                                    title: "Warning !",
+                                    content:
+                                        "Are you sure to delete this link ?",
+                                    fungsi: (params) {
+                                      loadProvider.delete(int.parse(
+                                          getLink[idx].id.toString()));
+                                    },
+                                    params: idx,
+                                  ));
+                        },
+                        icon: const Icon(Icons.delete)),
+                    title: Text(getLink[idx].title),
+                    subtitle: Text(getLink[idx].shortUrl),
+                    trailing: IconButton(
+                        onPressed: () {
+                          loadProvider.updateLink(
+                              DataLink(
+                                  id: getLink[idx].id,
+                                  title: "title edited",
+                                  date: "date edited",
+                                  shortUrl: DateTime.now().toString(),
+                                  longUrl: "link long edited"),
+                              int.parse(getLink[idx].id.toString()));
+                        },
+                        icon: const Icon(Icons.edit)),
+                  ),
                 ),
               );
             }),

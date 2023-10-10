@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class DetailLink extends StatelessWidget {
@@ -42,7 +43,9 @@ class DetailLink extends StatelessWidget {
                   ),
                   child: IconButton(
                       color: Colors.white,
-                      onPressed: () {},
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: sortedLink));
+                      },
                       icon: const Icon(Icons.copy)),
                 )
               ],
